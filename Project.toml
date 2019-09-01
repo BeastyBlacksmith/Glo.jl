@@ -3,6 +3,11 @@ uuid = "578b42c6-ccb1-11e9-3f90-91546bb1a07d"
 authors = ["Simon Christ"]
 version = "0.1.0"
 
+[deps]
+HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+MacroTools = "1914dd2f-81c6-5fcd-8719-6d5c9610ff09"
+
 [compat]
 julia = "1.1"
 
