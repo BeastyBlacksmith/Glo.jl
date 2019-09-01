@@ -8,7 +8,7 @@ using HTTP
 # TODO: make this accept authentifiation, create distinguishable methods for apis that target the same URI or prepend the REST-method to method names
 function declare_api(root, method, endpoint, param_names)
     function_name = Symbol(join(split(endpoint, "/"; keepempty=false), "_"))
-    param_sig = Expr(:parameters,Expr.(:kw, Symbol.(param_names), :nothing)...)
+    param_sig = Expr(:parameters, Expr(:kw, :header, String[]), Expr.(:kw, Symbol.(param_names), :nothing)...)
 
     set_query_code = Expr(:block)
     set_query_code.args = map(param_names) do param
@@ -19,16 +19,29 @@ function declare_api(root, method, endpoint, param_names)
         end |> MacroTools.unblock
     end
 
-    quote
-        function $(function_name)($(param_sig))
-            query = Dict()
-            $(set_query_code)
-            uri = HTTP.URI($root)
-            uri = merge(uri; path=uri.path*$endpoint, query=query)
-            resp = HTTP.request($method, uri, ["USER-AGENT"=>"RESTful.jl"])
-            JSON.parse(String(resp.body))
-        end
-    end|> MacroTools.unblock
+    if method == "POST"
+        quote
+            function $(function_name)($(param_sig),post_msg)
+                query = Dict()
+                $(set_query_code)
+                uri = HTTP.URI($root)
+                uri = merge(uri; path=uri.path*$endpoint, query=query)
+                resp = HTTP.request($method, uri, header, post_msg)
+                JSON.parse(String(resp.body))
+            end
+        end|> MacroTools.unblock
+    else
+        quote
+            function $(function_name)($(param_sig))
+                query = Dict()
+                $(set_query_code)
+                uri = HTTP.URI($root)
+                uri = merge(uri; path=uri.path*$endpoint, query=query)
+                resp = HTTP.request($method, uri, header)
+                JSON.parse(String(resp.body))
+            end
+        end|> MacroTools.unblock
+    end
 end
 
 include("declarations.jl")
