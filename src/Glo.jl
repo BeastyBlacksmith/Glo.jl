@@ -5,7 +5,7 @@ using MacroTools: striplines
 using JSON
 using HTTP
 # Kindly adopted form Lyndon White (https://github.com/oxinabox/RESTful.jl/blob/master/src/proto.ipynb)
-# TODO: make this accept authentifiation, create distinguishable methods for apis that target the same URI or prepend the REST-method to method names
+# TODO: how to deal with (multiple) IDs, make dispatches for deletion 
 function declare_api(root, method, endpoint, param_names)
     function_name = Symbol(join(split(endpoint, "/"; keepempty=false), "_"))
     param_sig = Expr(:parameters, Expr(:kw, :header, String[]), Expr.(:kw, Symbol.(param_names), :nothing)...)
