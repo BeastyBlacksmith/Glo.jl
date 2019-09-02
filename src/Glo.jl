@@ -5,8 +5,14 @@ using MacroTools: striplines
 using JSON
 using HTTP
 # Kindly adopted form Lyndon White (https://github.com/oxinabox/RESTful.jl/blob/master/src/proto.ipynb)
-# TODO: how to deal with (multiple) IDs, make dispatches for deletion 
+# TODO: how to deal with (multiple) IDs, make dispatches for deletion
 function declare_api(root, method, endpoint, param_names)
+    page_params = Symbol[]
+    for match in eachmatch(r"\{([A-z]+)\}", endpoint)
+        push!( page_params, Symbol(match.captures[1]) )
+        endpoint = join( [endpoint[1:match.offset-1], endpoint[match.offset+1+length(match.match):end]] )
+    end
+    @show page_params, endpoint
     function_name = Symbol(join(split(endpoint, "/"; keepempty=false), "_"))
     param_sig = Expr(:parameters, Expr(:kw, :header, String[]), Expr.(:kw, Symbol.(param_names), :nothing)...)
 
