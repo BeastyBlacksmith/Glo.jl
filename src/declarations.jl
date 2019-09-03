@@ -38,6 +38,6 @@ end
 @eval $(declare_api("https://gloapi.gitkraken.com/v1/glo", "POST", "/boards/{board_id}/cards/{card_id}/comments", []))
 @eval $(declare_api("https://gloapi.gitkraken.com/v1/glo", "POST", "/boards/{board_id}/cards/{card_id}/comments/batch", []))
 @eval $(declare_api("https://gloapi.gitkraken.com/v1/glo", "POST", "/boards/{board_id}/cards/{card_id}/comments/{comment_id}", []))
-@eval $(declare_api("https://gloapi.gitkraken.com/v1/glo", "DELETE", "/boards/{board_id}/cards/{card_id}/comments/{comments_id}", []))
+@eval $(declare_api("https://gloapi.gitkraken.com/v1/glo", "DELETE", "/boards/{board_id}/cards/{card_id}/comments/{comment_id}", []))
 ## User API
 @eval $(declare_api("https://gloapi.gitkraken.com/v1/glo", "GET", "/user", ["fields"]))

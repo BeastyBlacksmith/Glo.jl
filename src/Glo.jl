@@ -9,13 +9,16 @@ using DocStringExtensions
 function declare_api(root, method, endpoint, param_names)
     page_paraval = Symbol[]
     page_params = Expr[]
+    page_indxs = [1]
     for match in eachmatch(r"\{([A-z]+)\}", endpoint)
         cap = match.captures[1]
         cap_type = join((x->[uppercasefirst(x[1]),uppercase(x[2])])(split(cap,"_")))
         push!( page_paraval, Symbol(cap[1:end-3]) )
         push!( page_params, Expr(Symbol("::"),Symbol(cap),Symbol(cap_type) ) )
-        endpoint = join( [endpoint[1:match.offset-1], endpoint[match.offset+1+length(match.match):end]] )
+        append!( page_indxs, [match.offset-1, match.offset+1+length(match.match)] )
     end
+    push!(page_indxs, lastindex(endpoint))
+    endpoint = join( [ endpoint[page_indxs[i]:page_indxs[i+1]] for i in firstindex(page_indxs):2:lastindex(page_indxs) ] )
     function_name = Symbol(join(split(endpoint, "/"; keepempty=false), "_"))
     param_sig = Expr(:parameters, Expr(:kw, :header, String[]), Expr.(:kw, Symbol.(param_names), :nothing)...)
 
