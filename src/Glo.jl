@@ -46,7 +46,7 @@ function declare_api(root, method, endpoint, param_names)
             $($DocStringExtensions.SIGNATURES)
             $($(String(method)))s `post_msg` to $($function_name) by $($page_params...).
             """
-            function $(function_name)($(param_sig),post_msg::String,$(page_params...))
+            function $(function_name)($(param_sig),post_msg::Any,$(page_params...))
                 query = Dict()
                 $(set_query_code)
                 endpoint = split($endpoint,"/")
@@ -54,7 +54,7 @@ function declare_api(root, method, endpoint, param_names)
                 endpoint = join( endpoint, "/" )
                 uri = HTTP.URI($root)
                 uri = merge(uri; path=uri.path*$endpoint, query=query)
-                resp = HTTP.request($method, uri, header, post_msg)
+                resp = HTTP.request($method, uri, header, json(post_msg))
                 JSON.parse(String(resp.body))
             end
         end|> MacroTools.unblock
