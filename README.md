@@ -15,5 +15,12 @@ In order to use this API you have to pass a header specifying your authentificat
 A personal access token can be created [here](https://app.gitkraken.com/pat/new)
 ```julia
 using Glo
-Glo.boards(header = ["Content-Type" => "application/json", "Accept" => "application/json", "Authorization" => "Bearer <yourPAT>"])
+# This gets you all your boards
+Glo.boards(
+    header = [
+        "Content-Type" => "application/json",
+        "Accept" => "application/json",
+        "Authorization" => "Bearer <yourPAT>"
+    ]
+)
 ```
