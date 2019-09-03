@@ -4,6 +4,7 @@ using MacroTools
 using MacroTools: striplines
 using JSON
 using HTTP
+using DocStringExtensions
 # Kindly adopted form Lyndon White (https://github.com/oxinabox/RESTful.jl/blob/master/src/proto.ipynb)
 function declare_api(root, method, endpoint, param_names)
     page_paraval = Symbol[]
@@ -35,8 +36,13 @@ function declare_api(root, method, endpoint, param_names)
         end |> MacroTools.unblock
     end
 
+    # TODO: docstrings could be prettier
     if method == "POST"
         quote
+            """
+            $($DocStringExtensions.SIGNATURES)
+            $($(String(method)))s `post_msg` to $($function_name) by $($page_params...).
+            """
             function $(function_name)($(param_sig),post_msg::String,$(page_params...))
                 query = Dict()
                 $(set_query_code)
@@ -51,7 +57,11 @@ function declare_api(root, method, endpoint, param_names)
         end|> MacroTools.unblock
     elseif method == "DELETE"
         quote
-            function $(function_name)($(param_sig),::typeof(!),$(page_params...))
+            """
+            $($DocStringExtensions.SIGNATURES)
+            $($(String(method)))s $($function_name) by $($page_params...).
+            """
+            function $(function_name)($(param_sig),bang::typeof(!),$(page_params...))
                 query = Dict()
                 $(set_query_code)
                 endpoint = split($endpoint,"/")
@@ -65,6 +75,10 @@ function declare_api(root, method, endpoint, param_names)
         end|> MacroTools.unblock
     else
         quote
+            """
+            $($DocStringExtensions.SIGNATURES)
+            $($(String(method)))s $($function_name) by $($page_params...).
+            """
             function $(function_name)($(param_sig),$(page_params...))
                 query = Dict()
                 $(set_query_code)
