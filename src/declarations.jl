@@ -27,7 +27,17 @@ end
 @eval $(declare_api("https://gloapi.gitkraken.com/v1/glo", "DELETE", "/boards/{board_id}/cards/{card_id}", []))
 @eval $(declare_api("https://gloapi.gitkraken.com/v1/glo", "GET", "/boards/{board_id}/columns/{column_id}/cards", ["fields", "archived", "page", "per_page", "sort"]))
 ## Lables API
+@eval $(declare_api("https://gloapi.gitkraken.com/v1/glo", "POST", "/boards/{board_id}/labels", []))
+@eval $(declare_api("https://gloapi.gitkraken.com/v1/glo", "POST", "/boards/{board_id}/labels/{label_id}", []))
+@eval $(declare_api("https://gloapi.gitkraken.com/v1/glo", "DELETE", "/boards/{board_id}/labels/{label_id}", []))
 ## Attachments API
+@eval $(declare_api("https://gloapi.gitkraken.com/v1/glo", "GET", "/boards/{board_id}/cards/{card_id}/attachments", ["fields", "page", "per_page", "sort"]))
+@eval $(declare_api("https://gloapi.gitkraken.com/v1/glo", "POST", "/boards/{board_id}/cards/{card_id}/attachments", []))
 ## Comments API
+@eval $(declare_api("https://gloapi.gitkraken.com/v1/glo", "GET", "/boards/{board_id}/cards/{card_id}/comments", ["fields", "page", "per_page", "sort"]))
+@eval $(declare_api("https://gloapi.gitkraken.com/v1/glo", "POST", "/boards/{board_id}/cards/{card_id}/comments", []))
+@eval $(declare_api("https://gloapi.gitkraken.com/v1/glo", "POST", "/boards/{board_id}/cards/{card_id}/comments/batch", []))
+@eval $(declare_api("https://gloapi.gitkraken.com/v1/glo", "POST", "/boards/{board_id}/cards/{card_id}/comments/{comment_id}", []))
+@eval $(declare_api("https://gloapi.gitkraken.com/v1/glo", "DELETE", "/boards/{board_id}/cards/{card_id}/comments/{comments_id}", []))
 ## User API
 @eval $(declare_api("https://gloapi.gitkraken.com/v1/glo", "GET", "/user", ["fields"]))
