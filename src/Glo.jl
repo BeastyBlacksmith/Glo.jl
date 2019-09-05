@@ -72,7 +72,8 @@ function declare_api(root, method, endpoint, param_names)
                 uri = HTTP.URI($root)
                 uri = merge(uri; path=uri.path*endpoint, query=query)
                 resp = HTTP.request($method, uri, header)
-                JSON.parse(String(resp.body))
+                resp != "" && return JSON.parse(String(resp.body))
+                return nothing
             end
         end|> MacroTools.unblock
     else
