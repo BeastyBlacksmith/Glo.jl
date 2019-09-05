@@ -39,12 +39,11 @@ function declare_api(root, method, endpoint, param_names)
         end |> MacroTools.unblock
     end
 
-    # TODO: docstrings could be prettier
     if method == "POST"
         quote
             """
             $($DocStringExtensions.SIGNATURES)
-            $($(String(method)))s `post_msg` to $($function_name) by $($page_params...).
+            $($(String(method)))s `post_msg` to `$($function_name)` by `$(join(Symbol.($page_params),"`, `", "` and `"))`.
             """
             function $(function_name)($(param_sig),post_msg::Any,$(page_params...))
                 query = Dict()
@@ -53,7 +52,7 @@ function declare_api(root, method, endpoint, param_names)
                 $(set_endpoint_code)
                 endpoint = join( endpoint, "/" )
                 uri = HTTP.URI($root)
-                uri = merge(uri; path=uri.path*$endpoint, query=query)
+                uri = merge(uri; path=uri.path*endpoint, query=query)
                 resp = HTTP.request($method, uri, header, json(post_msg))
                 JSON.parse(String(resp.body))
             end
@@ -62,7 +61,7 @@ function declare_api(root, method, endpoint, param_names)
         quote
             """
             $($DocStringExtensions.SIGNATURES)
-            $($(String(method)))s $($function_name) by $($page_params...).
+            $($(String(method)))s `$($function_name)` by `$(join(Symbol.($page_params),"`, `", "` and `"))`.
             """
             function $(function_name)($(param_sig),bang::typeof(!),$(page_params...))
                 query = Dict()
@@ -71,7 +70,7 @@ function declare_api(root, method, endpoint, param_names)
                 $(set_endpoint_code)
                 endpoint = join( endpoint, "/" )
                 uri = HTTP.URI($root)
-                uri = merge(uri; path=uri.path*$endpoint, query=query)
+                uri = merge(uri; path=uri.path*endpoint, query=query)
                 resp = HTTP.request($method, uri, header)
                 JSON.parse(String(resp.body))
             end
@@ -80,7 +79,7 @@ function declare_api(root, method, endpoint, param_names)
         quote
             """
             $($DocStringExtensions.SIGNATURES)
-            $($(String(method)))s $($function_name) by $($page_params...).
+            $($(String(method)))s `$($function_name)` by `$(join(Symbol.($page_params),"`, `", "` and `"))`.
             """
             function $(function_name)($(param_sig),$(page_params...))
                 query = Dict()
@@ -89,7 +88,7 @@ function declare_api(root, method, endpoint, param_names)
                 $(set_endpoint_code)
                 endpoint = join( endpoint, "/" )
                 uri = HTTP.URI($root)
-                uri = merge(uri; path=uri.path*$endpoint, query=query)
+                uri = merge(uri; path=uri.path*endpoint, query=query)
                 resp = HTTP.request($method, uri, header)
                 JSON.parse(String(resp.body))
             end
