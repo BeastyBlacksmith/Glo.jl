@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.com/beastyblacksmith/Glo.jl.svg?branch=master)](https://travis-ci.com/beastyblacksmith/Glo.jl)
 [![Codecov](https://codecov.io/gh/beastyblacksmith/Glo.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/beastyblacksmith/Glo.jl)
+[![Documentation Status](https://img.shields.io/badge/docs-latest-yellowgreen)](https://pkg.julialang.org/docs/Glo)
 
 Julia wrapper of the [Glo-board API](https://gloapi.gitkraken.com/v1/docs/#/).
 Developer documentation is [here](https://support.gitkraken.com/developers/overview/).
